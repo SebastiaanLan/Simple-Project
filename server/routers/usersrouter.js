@@ -1,15 +1,15 @@
 import Router from 'express';
 
-import { getAllUsers, getOneUser, addUser, deleteUser, updateUser } from '../controllers/usercontroller.js';
+import { getAllUsers, getOneUser, register, login, deleteUser, updateUser } from '../controllers/usercontroller.js';
+import cookieAuth from '../middleware/cookieAuth.js';
 
 const router = Router();
 
-export let users = ['Sebastiaan', "Rick", "Mike", "Robert"];
-
 router.get('/users', getAllUsers);
 router.get('/users/:id', getOneUser);
-router.post('/users', addUser)
-router.delete('/users/:id', deleteUser);
-router.put('/users/:id', updateUser)
+router.post('/login', login);
+router.post('/register', register);
+router.delete('/users/:id', cookieAuth, deleteUser);
+router.put('/users/:id', cookieAuth, updateUser)
 
 export default router;
