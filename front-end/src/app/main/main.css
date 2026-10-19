@@ -1,0 +1,13 @@
+table {
+    text-align: left;
+    width: 80%;
+    table-layout: fixed;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 6px;
+    border: 1px solid black;
+    overflow-wrap: anywhere;
+}

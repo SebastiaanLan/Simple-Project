@@ -1,5 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 import userrouter from './routers/usersrouter.js';
 import db from './config/database.js';
@@ -14,6 +15,9 @@ console.log("Database Synced");
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+    orgin: 'http://localhost:4200'
+}))
 
 // Routers
 app.use('/', userrouter);
