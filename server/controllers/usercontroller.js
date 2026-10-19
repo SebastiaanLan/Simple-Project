@@ -18,7 +18,9 @@ const setAuthCookie = (res, user) => {
 
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await User.findAll();
+        const users = await User.findAll({
+            attributes: ['id', 'name', 'email'],
+        });
 
         console.log("Sent all the Users");
         res.status(200).json(users);
@@ -31,7 +33,9 @@ export const getAllUsers = async (req, res) => {
 export const getOneUser = async (req, res) => {
     try {
         const id = Number(req.params.id);
-        const user = await User.findByPk(id);
+        const user = await User.findByPk(id, {
+            attributes: ['id', 'name', 'email'],
+        });
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -46,25 +50,30 @@ export const getOneUser = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    let { email, password } = req.body;
-    email = email.toLowerCase();
+    try {
+        let { email, password } = req.body;
+        email = email.toLowerCase();
 
-    if (!email | !password) {
-        return res.status(400).json({ message: 'email and password are required' });
+        if (!email | !password) {
+            return res.status(400).json({ message: 'email and password are required' });
+        }
+
+        const user = await User.findOne({ where: { email } });
+        const hash = user ? user.password : DUMMY_HASH;
+        const passwordCheck = await bcrypt.compare(password, hash);
+
+        if (!user || !passwordCheck) {
+            return res.status(401).json({ message: 'Invalid Login' });
+        }
+
+        setAuthCookie(res, user);
+
+        console.log('User logged in successfully');
+        res.status(200).json({ message: 'Login succesful' })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Something went wrong" });
     }
-
-    const user = await User.findOne({ where: { email } });
-    const hash = user ? user.password : DUMMY_HASH;
-    const passwordCheck = await bcrypt.compare(password, hash);
-
-    if (!user || !passwordCheck) {
-        return res.status(401).json({ message: 'Invalid Login' });
-    }
-
-    setAuthCookie(res, user);
-
-    console.log('User logged in successfully');
-    res.status(200).json({ message: 'Login succesful' })
 }
 
 export const register = async (req, res) => {
@@ -82,7 +91,7 @@ export const register = async (req, res) => {
         setAuthCookie(res, user);
 
         console.log("User registered");
-        res.status(201).json(user);
+        res.status(201).json({ id: user.id, name: user.name, email: user.email});
     } catch (err) {
         if (err.name === 'SequelizeUniqueConstraintError') {
             console.log("User tried to update to a email already in use");
@@ -133,7 +142,7 @@ export const updateUser = async (req, res) => {
         await user.update({ name, email, password: hash });
 
         console.log("Updated a user");
-        res.status(201).json(user);
+        res.status(201).json({ id: user.id, name: user.name, email: user.email });
         
     } catch (err) {
         if (err.name === 'SequelizeUniqueConstraintError') {
