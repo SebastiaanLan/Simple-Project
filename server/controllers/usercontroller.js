@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import User from '../models/User.js';
 
 import logger from '../util/logger.js';
-import { cookieOptions, setAuthCookie } from '../util/cookies.js';
+import { setAuthCookie } from '../util/cookies.js';
 import normalizePhone from '../util/phone.js';
 
 const saltRounds = 10;
