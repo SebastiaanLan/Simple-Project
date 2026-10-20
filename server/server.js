@@ -1,11 +1,10 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import winston from 'winston';
 
 import userrouter from './routers/usersrouter.js';
-import db from './config/database.js';
-import logger from './logger.js';
+import db from './util/database.js';
+import logger from './util/logger.js';
 
 const serverLogger = logger.child({ module: 'server' });
 
@@ -20,8 +19,9 @@ serverLogger.info("Database Synced");
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    orgin: 'http://localhost:4200'
-}))
+    origin: 'http://localhost:4200',
+    credentials: true,
+}));
 
 // Routers
 app.use('/', userrouter);

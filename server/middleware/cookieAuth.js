@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-import logger from '../logger.js';
+import logger from '../util/logger.js';
 
-import { cookieOptions } from '../controllers/usercontroller.js';
+import { cookieOptions } from '../util/cookies.js';
 
 const userLogger = logger.child({ module: 'auth' });
 

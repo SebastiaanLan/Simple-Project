@@ -1,28 +1,20 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken'
 
 import User from '../models/User.js';
-import logger from '../logger.js';
+
+import logger from '../util/logger.js';
+import { cookieOptions, setAuthCookie } from '../util/cookies.js';
+import normalizePhone from '../util/phone.js';
 
 const saltRounds = 10;
 const DUMMY_HASH = "$2b$10$3T5OJkCuDMyu5nFA.3MrJejSIVfkkBjU5qrqKOo/lZfRH1KgIW42u";
 
 const userLogger = logger.child({ module: 'auth' });
 
-export const cookieOptions = {
-    httpOnly: true,
-}
-
-const setAuthCookie = (res, user) => {
-    const token = jwt.sign({ id:user.id , username: user.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
-
-    res.cookie("token", token, {...cookieOptions, maxAge: 60 * 60 * 1000});
-}
-
 export const getAllUsers = async (req, res) => {
     try {
         const users = await User.findAll({
-            attributes: ['id', 'name', 'email'],
+            attributes: ['id', 'name', 'email', 'phone'],
         });
 
         userLogger.info("Sent all the Users");
@@ -37,7 +29,7 @@ export const getOneUser = async (req, res) => {
     try {
         const id = Number(req.params.id);
         const user = await User.findByPk(id, {
-            attributes: ['id', 'name', 'email'],
+            attributes: ['id', 'name', 'email', 'phone'],
         });
 
         if (!user) {
@@ -54,14 +46,16 @@ export const getOneUser = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        let { email, password } = req.body;
-        email = email.toLowerCase();
+        const { email, password } = req.body;
 
-        if (!email | !password) {
+        if (![email, password].every(v => typeof v === 'string' && v.trim())) {
             return res.status(400).json({ message: 'email and password are required' });
         }
 
-        const user = await User.findOne({ where: { email } });
+        const user = await User.findOne({ 
+            where: { email: email.trim().toLowerCase() } 
+        });
+
         const hash = user ? user.password : DUMMY_HASH;
         const passwordCheck = await bcrypt.compare(password, hash);
 
@@ -72,7 +66,7 @@ export const login = async (req, res) => {
         setAuthCookie(res, user);
 
         userLogger.info('User logged in successfully');
-        res.status(200).json({ message: 'Login succesful' })
+        res.status(200).json({ message: 'Login successful' })
     } catch (err) {
         userLogger.error(err);
         res.status(500).json({ message: "Something went wrong" });
@@ -81,23 +75,40 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
     try {
-        let { name, email, password } = req.body;
-        email = String(email).toLowerCase();
+        const { name, email, phone, password } = req.body;
 
-        if (!name || !email || !password) {
-            return res.status(400).json({ message: 'name, email and password are required' });
+        if (![name, email, phone, password].every(v => typeof v === 'string' && v.trim())) {
+            return res.status(400).json({ message: 'name, email, phone and password are required' });
+        }
+
+        if (password.length < 8 || password.length > 32) {
+            return res.status(400).json({ message: 'Password must be 8 to 32 characters' });
+        }
+
+        const normalizedPhone = normalizePhone(phone);
+
+        if (!normalizedPhone) {
+            return res.status(400).json({ message: 'Invalid phone number' })
         }
         
         const hash = await bcrypt.hash(password, saltRounds);
-        const user = await User.create({ name, email, password: hash });
+        const user = await User.create({ 
+            name: name.trim(), 
+            email: email.trim().toLowerCase(), 
+            phone: normalizedPhone, 
+            password: hash 
+        });
 
         setAuthCookie(res, user);
 
         userLogger.info("User registered");
-        res.status(201).json({ id: user.id, name: user.name, email: user.email});
+        res.status(201).json({ id: user.id, name: user.name, phone: user.phone, email: user.email});
     } catch (err) {
         if (err.name === 'SequelizeUniqueConstraintError') {
             return res.status(409).json({ message: 'Email already in use' });
+        }
+        if (err.name === 'SequelizeValidationError') {
+            return res.status(400).json({ message: 'Some information is not valid' })
         }
 
         userLogger.error(err);
@@ -126,29 +137,42 @@ export const deleteUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        let { name, email, password } = req.body;
-        email = email.toLowerCase();
+        let { name, email, phone, password } = req.body;
 
-        if (!name || !email || !password) {
-            return res.status(400).json({ message: 'name, email and password are required' });
+        if (![name, email, phone, password].every(v => typeof v === 'string' && v.trim())) {
+            return res.status(400).json({ message: 'name, email, phone and password are required' });
         }
 
         const id = Number(req.params.id);
         const user = await User.findByPk(id);
 
         if (!user) {
-            return res.status(404).json({ message: "Something went wrong" });
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const normalizedPhone = normalizePhone(phone);
+
+        if (!normalizedPhone) {
+            return res.status(400).json({ message: 'Invalid phone number' })
         }
 
         const hash = await bcrypt.hash(password, saltRounds);
-        await user.update({ name, email, password: hash });
+        await user.update({ 
+            name: name.trim(), 
+            email: email.trim().toLowerCase(), 
+            phone: normalizedPhone, 
+            password: hash 
+        });
 
         userLogger.info("Updated a user");
-        res.status(201).json({ id: user.id, name: user.name, email: user.email });
+        res.status(200).json({ id: user.id, name: user.name, email: user.email, phone: user.phone });
         
     } catch (err) {
         if (err.name === 'SequelizeUniqueConstraintError') {
             return res.status(409).json({ message: 'Email already in use' });
+        }
+        if (err.name === 'SequelizeValidationError') {
+            return res.status(400).json({ message: 'Some information is not valid' })
         }
 
         userLogger.error(err);

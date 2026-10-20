@@ -1,6 +1,6 @@
-import sequelize from 'sequelize';
+import sequelize, { Sequelize } from 'sequelize';
 
-import db from '../config/database.js';
+import db from '../util/database.js';
 
 export const User = db.define('user', {
     id: {
@@ -9,10 +9,23 @@ export const User = db.define('user', {
         primaryKey: true
     }, name: {
         type: sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            len: [1, 32]
+        }
     }, email: {
         type: sequelize.STRING,
-        unique: true
+        allowNull: false,
+        unique: true,
+        validate: {
+            isEmail: true
+        }
+    }, phone: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            is: /^[+]?[- ()0-9]{6,20}$/
+        }
     }, password: {
         type: sequelize.STRING,
         allowNull: false
