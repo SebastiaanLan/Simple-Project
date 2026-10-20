@@ -46,15 +46,9 @@ export const getOneUser = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password } = matchedData(req);
 
-        if (![email, password].every(v => typeof v === 'string' && v.trim())) {
-            return res.status(400).json({ message: 'email and password are required' });
-        }
-
-        const user = await User.findOne({ 
-            where: { email: email.trim().toLowerCase() } 
-        });
+        const user = await User.findOne({ where: { email } });
 
         const hash = user ? user.password : DUMMY_HASH;
         const passwordCheck = await bcrypt.compare(password, hash);
@@ -75,29 +69,10 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
     try {
-        const { name, email, phone, password } = req.body;
-
-        if (![name, email, phone, password].every(v => typeof v === 'string' && v.trim())) {
-            return res.status(400).json({ message: 'name, email, phone and password are required' });
-        }
-
-        if (password.length < 8 || password.length > 32) {
-            return res.status(400).json({ message: 'Password must be 8 to 32 characters' });
-        }
-
-        const normalizedPhone = normalizePhone(phone);
-
-        if (!normalizedPhone) {
-            return res.status(400).json({ message: 'Invalid phone number' })
-        }
+        const { name, email, phone, password } = matchedData(req);
         
         const hash = await bcrypt.hash(password, saltRounds);
-        const user = await User.create({ 
-            name: name.trim(), 
-            email: email.trim().toLowerCase(), 
-            phone: normalizedPhone, 
-            password: hash 
-        });
+        const user = await User.create({ name, email, phone, password: hash });
 
         setAuthCookie(res, user);
 

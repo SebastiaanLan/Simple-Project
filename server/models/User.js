@@ -11,7 +11,7 @@ export const User = db.define('user', {
         type: sequelize.STRING,
         allowNull: false,
         validate: {
-            len: [1, 32]
+            len: [2, 32]
         }
     }, email: {
         type: sequelize.STRING,

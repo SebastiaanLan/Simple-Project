@@ -14,7 +14,7 @@ export class Register {
   UsersService = inject(Users);
 
   form = this.FormBuilder.group({
-    name: ['', [Validators.required, Validators.pattern(/^[\p{L}][\p{L}\s'\-]*$/u), Validators.minLength(1), Validators.maxLength(32)]],
+    name: ['', [Validators.required, Validators.pattern(/^[\p{L}][\p{L}\s'\-]*$/u), Validators.minLength(2), Validators.maxLength(32)]],
     email: ['', [Validators.required, Validators.email]],
     phone: ['', [Validators.required, Validators.pattern(/^[+]?[- ()0-9]{6,20}$/)]],
     password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(32)]]
