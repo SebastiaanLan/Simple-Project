@@ -2,9 +2,12 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 
 import User from '../models/User.js';
+import logger from '../logger.js';
 
 const saltRounds = 10;
 const DUMMY_HASH = "$2b$10$3T5OJkCuDMyu5nFA.3MrJejSIVfkkBjU5qrqKOo/lZfRH1KgIW42u";
+
+const userLogger = logger.child({ module: 'auth' });
 
 export const cookieOptions = {
     httpOnly: true,
@@ -22,10 +25,10 @@ export const getAllUsers = async (req, res) => {
             attributes: ['id', 'name', 'email'],
         });
 
-        console.log("Sent all the Users");
+        userLogger.info("Sent all the Users");
         res.status(200).json(users);
     } catch(err) {
-        console.log(err);
+        userLogger.error(err);
         res.status(500).json({ message: "Something went wrong"});
     }
 }
@@ -41,10 +44,10 @@ export const getOneUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        console.log("Send one user");
+        userLogger.info("Send one user");
         res.status(200).json(user);
     } catch(err) {
-        console.log(err);
+        userLogger.error(err);
         res.status(500).json({ message: "Something went wrong"});
     }
 }
@@ -68,10 +71,10 @@ export const login = async (req, res) => {
 
         setAuthCookie(res, user);
 
-        console.log('User logged in successfully');
+        userLogger.info('User logged in successfully');
         res.status(200).json({ message: 'Login succesful' })
     } catch (err) {
-        console.log(err);
+        userLogger.error(err);
         res.status(500).json({ message: "Something went wrong" });
     }
 }
@@ -90,15 +93,14 @@ export const register = async (req, res) => {
 
         setAuthCookie(res, user);
 
-        console.log("User registered");
+        userLogger.info("User registered");
         res.status(201).json({ id: user.id, name: user.name, email: user.email});
     } catch (err) {
         if (err.name === 'SequelizeUniqueConstraintError') {
-            console.log("User tried to update to a email already in use");
             return res.status(409).json({ message: 'Email already in use' });
         }
 
-        console.log(err);
+        userLogger.error(err);
         res.status(500).json({ message: "Something went wrong"});   
     }
 }
@@ -114,10 +116,10 @@ export const deleteUser = async (req, res) => {
 
         await user.destroy();
 
-        console.log("Deleted a user");
+        userLogger.info("Deleted a user");
         res.status(204).end();
     } catch (err) {
-        console.log(err);
+        userLogger.error(err);
         res.status(500).json({ message: "Something went wrong"});   
     }
 }
@@ -141,16 +143,15 @@ export const updateUser = async (req, res) => {
         const hash = await bcrypt.hash(password, saltRounds);
         await user.update({ name, email, password: hash });
 
-        console.log("Updated a user");
+        userLogger.info("Updated a user");
         res.status(201).json({ id: user.id, name: user.name, email: user.email });
         
     } catch (err) {
         if (err.name === 'SequelizeUniqueConstraintError') {
-            console.log("User tried to update to a email already in use");
             return res.status(409).json({ message: 'Email already in use' });
         }
 
-        console.log(err);
+        userLogger.error(err);
         res.status(500).json({ message: "Something went wrong"});   
     }
 }
