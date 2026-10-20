@@ -9,7 +9,7 @@ export class Users {
     private _users: any = signal([]);
     users = this._users.asReadonly();
 
-    getTodos() {
+    getUsers() {
         return this.http.get(this.url + '/users').subscribe(users => this._users.set(users));
     }
 }

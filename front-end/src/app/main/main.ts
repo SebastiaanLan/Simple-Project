@@ -14,6 +14,6 @@ export class Main {
   users = this.usersService.users;
   
   ngOnInit() {
-    this.usersService.getTodos()
+    this.usersService.getUsers()
   }
 }
