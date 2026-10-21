@@ -1,9 +1,10 @@
+import { matchedData } from 'express-validator';
 import bcrypt from 'bcrypt';
 
 import User from '../models/User.js';
 
 import logger from '../util/logger.js';
-import { setAuthCookie } from '../util/cookies.js';
+import { setAuthCookie, cookieOptions } from '../util/cookies.js';
 import normalizePhone from '../util/phone.js';
 
 const saltRounds = 10;
@@ -14,7 +15,7 @@ const userLogger = logger.child({ module: 'auth' });
 export const getAllUsers = async (req, res) => {
     try {
         const users = await User.findAll({
-            attributes: ['id', 'name', 'email', 'phone'],
+            attributes: ['id', 'name', 'email', 'phone', 'role'],
         });
 
         userLogger.info("Sent all the Users");
@@ -64,6 +65,17 @@ export const login = async (req, res) => {
     } catch (err) {
         userLogger.error(err);
         res.status(500).json({ message: "Something went wrong" });
+    }
+}
+
+export const logout = (req, res) => {
+    try {
+        res.clearCookie('token', cookieOptions);
+
+        res.status(200).json({ message: "Logout sucessful" })
+    } catch (err) {
+        userLogger.error(err);
+        res.status(500).josn({ message: "Something went wrong" })
     }
 }
 
@@ -152,5 +164,59 @@ export const updateUser = async (req, res) => {
 
         userLogger.error(err);
         res.status(500).json({ message: "Something went wrong"});   
+    }
+}
+
+export const me = async (req, res) => {
+    try {
+        const user = req.user
+
+        return res.status(200).json({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role
+        })
+        
+    } catch (err) {
+        userLogger.error(err);
+
+        return res.status(500).json({
+            message: 'Something went wrong'
+        });
+        
+    }
+}
+
+export const changeUserRole = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const { role } = matchedData(req);
+
+        const user = await User.findByPk(id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" })
+        }
+
+        if (user.role === role) {
+            return res.status(200).json({
+                message: 'User already has this role',
+            })
+        }
+
+        await user.update({ role });
+        
+        userLogger.info(`The role for a user has been set to ${user.role}`)
+        return res.status(200).json({
+            message: "User role updated"
+        })
+    } catch (err) {
+        userLogger.error(err);
+
+        return res.status(500).json({
+            message: 'Something went wrong'
+        })
     }
 }

@@ -13,7 +13,7 @@ const app = express();
 await db.authenticate();
 serverLogger.info('Database connected');
 
-await db.sync();
+await db.sync({ force: true });
 serverLogger.info("Database Synced");
 
 app.use(express.json());

@@ -1,0 +1,44 @@
+<main class="auth-page">
+    <mat-card class="auth-card" appearance="outlined">
+        <header class="auth-header">
+            <div class="logo">
+                <mat-icon>lock</mat-icon>
+            </div>
+
+            <h1>Welcome back</h1>
+            <p>Sign in to continue to your account</p>
+        </header>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+            <mat-form-field appearance="outline">
+                <mat-label>E-mail</mat-label>
+                <input matInput type="email" formControlName="email" />
+                <mat-icon matPrefix>mail</mat-icon>
+
+                @if (form.controls.email.hasError('required')) {
+                    <mat-error>Email is required</mat-error>
+                } @else if (form.controls.email.hasError('email')) {
+                    <mat-error>Enter a valid email adress</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password" />
+                <mat-icon matPrefix>key</mat-icon>
+
+                @if (form.controls.email.hasError('required')) {
+                    <mat-error>Password is required</mat-error>
+                }
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" type="submit" class="submit">
+                Sign in
+            </button>
+        </form>
+
+        <footer class="auth-footer">
+            Don't have an account? <a routerLink="/register" class="link">Sign Up</a>
+        </footer>
+    </mat-card>
+</main>

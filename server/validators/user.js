@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 
 import normalizePhone from "../util/phone.js";
 
@@ -43,4 +43,10 @@ export const loginRules = [
     body('password')
         .notEmpty()
         .withMessage('Password is required')
+]
+
+export const changeUserRules = [
+    param('id').isInt({ min: 1 }),
+    body('role').isIn(['user', 'admin'])
+
 ]

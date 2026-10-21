@@ -1,0 +1,76 @@
+<main class="auth-page">
+    <mat-card class="auth-card" appearance="outlined">
+        <header class="auth-header">
+            <div class="logo">
+                <mat-icon>lock</mat-icon>
+            </div>
+
+            <h1>Register here!</h1>
+            <p>Create your account</p>
+        </header>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+            <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput type="name" formControlName="name" />
+                <mat-icon matPrefix>person</mat-icon>
+
+                @if (form.controls.name.errors?.['required']) {
+                    <mat-error>Name is required</mat-error>
+                } @else if (form.controls.name.errors?.['pattern']) {
+                    <mat-error>Name can only have letters</mat-error>
+                } @else if (form.controls.name.errors?.['minlength']) {
+                    <mat-error>Name must be at least 1 characters</mat-error>
+                } @else if (form.controls.name.errors?.['maxlength']) {
+                    <mat-error>Name can not be longer than 32 characters</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>E-mail</mat-label>
+                <input matInput type="email" formControlName="email" />
+                <mat-icon matPrefix>mail</mat-icon>
+
+                @if (form.controls.email.errors?.['required']) {
+                    <mat-error>E-mail addres is required</mat-error>
+                } @else if (form.controls.email.errors?.['email']) {
+                    <mat-error>Invalid E-mail address</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Phone Number</mat-label>
+                <input matInput type="phone" formControlName="phone" />
+                <mat-icon matPrefix>phone</mat-icon>
+
+                @if (form.controls.phone.errors?.['required']) {
+                    <mat-error>Phone number is required</mat-error>
+                } @else if (form.controls.phone.errors?.['pattern']) {
+                    <mat-error>Invalid Phone number</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password" />
+                <mat-icon matPrefix>key</mat-icon>
+
+                @if (form.controls.password.errors?.['required']) {
+                    <mat-error>Password is required</mat-error>
+                } @else if (form.controls.password.errors?.['minlength']) {
+                    <mat-error>Password must be at least 8 characters</mat-error>
+                } @else if (form.controls.password.errors?.['maxlength']) {
+                    <mat-error>Password can not be longer then 32 characters</mat-error>
+                }
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" type="submit" class="submit">
+                Create account
+            </button>
+        </form>
+
+        <footer class="auth-footer">
+            Already have an account? <a routerLink="/login" class="link">Sign In</a>
+        </footer>
+    </mat-card>
+</main>
