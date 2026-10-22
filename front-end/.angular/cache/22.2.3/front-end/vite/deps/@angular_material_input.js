@@ -1,102 +1,17 @@
-import { Ca as ɵɵclassProp, En as ElementRef, In as Input, O as booleanAttribute, Qo as ɵɵlistener, Rc as NgZone, Wi as setClassMetadata, ao as ɵɵdefineNgModule, dl as inject, dr as Service, go as ɵɵdomProperty, il as effect, io as ɵɵdefineDirective, ir as Renderer2, jl as ɵɵdefineInjector, kc as InjectionToken, la as ɵɵNgOnChangesFeature, ml as isSignal, qn as NgModule, so as ɵɵdefineService, ua as ɵɵProvidersFeature, wn as Directive, ya as ɵɵattribute } from "./core-Cv98Z2sf.js";
+import { Ca as ɵɵclassProp, En as ElementRef, In as Input, O as booleanAttribute, Qo as ɵɵlistener, Rc as NgZone, Wi as setClassMetadata, ao as ɵɵdefineNgModule, dl as inject, go as ɵɵdomProperty, il as effect, io as ɵɵdefineDirective, ir as Renderer2, jl as ɵɵdefineInjector, kc as InjectionToken, la as ɵɵNgOnChangesFeature, ml as isSignal, qn as NgModule, ua as ɵɵProvidersFeature, wn as Directive, ya as ɵɵattribute } from "./core-Cv98Z2sf.js";
 import { Qn as Subject } from "./esm5-DYNb5pjm.js";
-import { t as BidiModule } from "./bidi-CVpiK5Tl.js";
 import "./common-DjZkAoZn.js";
 import { i as Platform } from "./_element-chunk-BFRWmx7T.js";
-import { n as getSupportedInputTypes } from "./_animation-chunk-CHgw2XSh.js";
-import { _ as FORM_FIELD, c as MatFormField, d as MatLabel, f as MatPrefix, l as MatFormFieldControl, p as MatSuffix, r as MAT_FORM_FIELD, s as MatError, t as MatFormFieldModule, u as MatHint, v as _IdGenerator, y as coerceBooleanProperty } from "./form-field-Qt2cqCvt.js";
-import { AutofillMonitor, TextFieldModule } from "./@angular_cdk_text-field.js";
+import { t as BidiModule } from "./bidi-CVpiK5Tl.js";
+import "./_animation-chunk-DsJTZIvP.js";
+import { t as _IdGenerator } from "./_id-generator-chunk-oFm1Q2j5.js";
 import { FormGroupDirective, NgControl, NgForm, Validators } from "./@angular_forms.js";
+import { t as getSupportedInputTypes } from "./platform-ClbS6NRw.js";
+import { _ as coerceBooleanProperty, c as MatFormField, d as MatLabel, f as MatPrefix, l as MatFormFieldControl, p as MatSuffix, r as MAT_FORM_FIELD, s as MatError, t as MatFormFieldModule, u as MatHint, v as FORM_FIELD } from "./form-field-Bp8K_yqS.js";
+import { n as ErrorStateMatcher, t as _ErrorStateTracker } from "./_error-state-chunk-B96MhtTN.js";
+import { AutofillMonitor, TextFieldModule } from "./@angular_cdk_text-field.js";
 //#region node_modules/@angular/material/fesm2022/_input-value-accessor-chunk.mjs
 var MAT_INPUT_VALUE_ACCESSOR = new InjectionToken("MAT_INPUT_VALUE_ACCESSOR");
-//#endregion
-//#region node_modules/@angular/material/fesm2022/_error-options-chunk.mjs
-var ShowOnDirtyErrorStateMatcher = class ShowOnDirtyErrorStateMatcher {
-	isErrorState(control, form) {
-		return !!(control && control.invalid && (control.dirty || form && form.submitted));
-	}
-	isSignalErrorState(field) {
-		if (!field) return false;
-		const invalid = field().invalid();
-		const dirty = field().dirty();
-		return invalid && dirty;
-	}
-	static ɵfac = function ShowOnDirtyErrorStateMatcher_Factory(__ngFactoryType__) {
-		return new (__ngFactoryType__ || ShowOnDirtyErrorStateMatcher)();
-	};
-	static ɵprov = /*@__PURE__*/ ɵɵdefineService({
-		token: ShowOnDirtyErrorStateMatcher,
-		factory: ShowOnDirtyErrorStateMatcher.ɵfac,
-		autoProvided: false
-	});
-};
-(() => {
-	(typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ShowOnDirtyErrorStateMatcher, [{
-		type: Service,
-		args: [{ autoProvided: false }]
-	}], null, null);
-})();
-var ErrorStateMatcher = class ErrorStateMatcher {
-	isErrorState(control, form) {
-		return !!(control && control.invalid && (control.touched || form && form.submitted));
-	}
-	isSignalErrorState(field) {
-		if (!field) return false;
-		const invalid = field().invalid();
-		const touched = field().touched();
-		return invalid && touched;
-	}
-	static ɵfac = function ErrorStateMatcher_Factory(__ngFactoryType__) {
-		return new (__ngFactoryType__ || ErrorStateMatcher)();
-	};
-	static ɵprov = /*@__PURE__*/ ɵɵdefineService({
-		token: ErrorStateMatcher,
-		factory: ErrorStateMatcher.ɵfac
-	});
-};
-(() => {
-	(typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ErrorStateMatcher, [{ type: Service }], null, null);
-})();
-//#endregion
-//#region node_modules/@angular/material/fesm2022/_error-state-chunk.mjs
-var _ErrorStateTracker = class {
-	_defaultMatcher;
-	_parentFormGroup;
-	_parentForm;
-	_stateChanges;
-	errorState = false;
-	matcher;
-	ngControl;
-	formField;
-	constructor(_defaultMatcher, directive, _parentFormGroup, _parentForm, _stateChanges) {
-		this._defaultMatcher = _defaultMatcher;
-		this._parentFormGroup = _parentFormGroup;
-		this._parentForm = _parentForm;
-		this._stateChanges = _stateChanges;
-		if (!directive) this.ngControl = this.formField = null;
-		else if (isSignal(directive.field) && !directive.updateValueAndValidity) {
-			this.formField = directive;
-			this.ngControl = null;
-		} else {
-			this.formField = null;
-			this.ngControl = directive;
-		}
-	}
-	updateErrorState() {
-		const oldState = this.errorState;
-		const newState = this._getCurrentErrorState(this.matcher || this._defaultMatcher);
-		if (newState !== oldState) {
-			this.errorState = newState;
-			this._stateChanges.next();
-		}
-	}
-	_getCurrentErrorState(matcher) {
-		if (this.formField && matcher?.isSignalErrorState) return matcher.isSignalErrorState(this.formField.field()) ?? false;
-		const parent = this._parentFormGroup || this._parentForm;
-		const control = this.ngControl ? this.ngControl.control : null;
-		return matcher?.isErrorState(control, parent) ?? false;
-	}
-};
 //#endregion
 //#region node_modules/@angular/material/fesm2022/input.mjs
 function getMatInputUnsupportedTypeError(type) {

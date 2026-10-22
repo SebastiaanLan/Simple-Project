@@ -1,105 +1,135 @@
 {
-  "hash": "6e132ef0",
-  "configHash": "b180e973",
+  "hash": "65dd15c8",
+  "configHash": "4fe56009",
   "lockfileHash": "1eb67056",
-  "browserHash": "993001ad",
+  "browserHash": "8a3a1318",
   "optimized": {
     "@angular/cdk/bidi": {
       "src": "../../../../../../node_modules/@angular/cdk/fesm2022/bidi.mjs",
       "file": "@angular_cdk_bidi.js",
-      "fileHash": "276ae035",
+      "fileHash": "d8181110",
+      "needsInterop": false
+    },
+    "@angular/cdk/scrolling": {
+      "src": "../../../../../../node_modules/@angular/cdk/fesm2022/scrolling.mjs",
+      "file": "@angular_cdk_scrolling.js",
+      "fileHash": "8dbca119",
       "needsInterop": false
     },
     "@angular/cdk/text-field": {
       "src": "../../../../../../node_modules/@angular/cdk/fesm2022/text-field.mjs",
       "file": "@angular_cdk_text-field.js",
-      "fileHash": "0b5a76cd",
+      "fileHash": "0e6e10d5",
       "needsInterop": false
     },
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
-      "fileHash": "ffad7624",
+      "fileHash": "2411239d",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "a4949454",
+      "fileHash": "2aa7f805",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "22e57d2e",
+      "fileHash": "2e0c098a",
       "needsInterop": false
     },
     "@angular/material/button": {
       "src": "../../../../../../node_modules/@angular/material/fesm2022/button.mjs",
       "file": "@angular_material_button.js",
-      "fileHash": "d00973f5",
+      "fileHash": "4fad8e72",
       "needsInterop": false
     },
     "@angular/material/card": {
       "src": "../../../../../../node_modules/@angular/material/fesm2022/card.mjs",
       "file": "@angular_material_card.js",
-      "fileHash": "ca0b3315",
+      "fileHash": "db726989",
+      "needsInterop": false
+    },
+    "@angular/material/dialog": {
+      "src": "../../../../../../node_modules/@angular/material/fesm2022/dialog.mjs",
+      "file": "@angular_material_dialog.js",
+      "fileHash": "8819a911",
       "needsInterop": false
     },
     "@angular/material/form-field": {
       "src": "../../../../../../node_modules/@angular/material/fesm2022/form-field.mjs",
       "file": "@angular_material_form-field.js",
-      "fileHash": "3567156c",
+      "fileHash": "a3dcdfd4",
       "needsInterop": false
     },
     "@angular/material/icon": {
       "src": "../../../../../../node_modules/@angular/material/fesm2022/icon.mjs",
       "file": "@angular_material_icon.js",
-      "fileHash": "bf166b25",
+      "fileHash": "b24cb129",
       "needsInterop": false
     },
     "@angular/material/input": {
       "src": "../../../../../../node_modules/@angular/material/fesm2022/input.mjs",
       "file": "@angular_material_input.js",
-      "fileHash": "4474e1dd",
+      "fileHash": "bf9ee98a",
+      "needsInterop": false
+    },
+    "@angular/material/select": {
+      "src": "../../../../../../node_modules/@angular/material/fesm2022/select.mjs",
+      "file": "@angular_material_select.js",
+      "fileHash": "f86dcbe3",
       "needsInterop": false
     },
     "@angular/material/table": {
       "src": "../../../../../../node_modules/@angular/material/fesm2022/table.mjs",
       "file": "@angular_material_table.js",
-      "fileHash": "355cda51",
+      "fileHash": "38b6d921",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "4e3fa426",
+      "fileHash": "77a9608f",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "ec09d1f8",
+      "fileHash": "e161250a",
       "needsInterop": false
     },
     "rxjs": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
       "file": "rxjs.js",
-      "fileHash": "6a2d7b1a",
+      "fileHash": "89784300",
       "needsInterop": false
     }
   },
   "chunks": {
-    "_animation-chunk-CHgw2XSh": {
-      "file": "_animation-chunk-CHgw2XSh.js",
+    "_animation-chunk-DsJTZIvP": {
+      "file": "_animation-chunk-DsJTZIvP.js",
       "isDynamicEntry": false
     },
     "_element-chunk-BFRWmx7T": {
       "file": "_element-chunk-BFRWmx7T.js",
       "isDynamicEntry": false
     },
+    "_error-state-chunk-B96MhtTN": {
+      "file": "_error-state-chunk-B96MhtTN.js",
+      "isDynamicEntry": false
+    },
+    "_id-generator-chunk-oFm1Q2j5": {
+      "file": "_id-generator-chunk-oFm1Q2j5.js",
+      "isDynamicEntry": false
+    },
     "_platform_location-chunk-raAKrl-w": {
       "file": "_platform_location-chunk-raAKrl-w.js",
+      "isDynamicEntry": false
+    },
+    "_ripple-module-chunk-BwlwbPUd": {
+      "file": "_ripple-module-chunk-BwlwbPUd.js",
       "isDynamicEntry": false
     },
     "_style-loader-chunk-91wp7WQe": {
@@ -122,12 +152,20 @@
       "file": "esm5-DYNb5pjm.js",
       "isDynamicEntry": false
     },
-    "form-field-Qt2cqCvt": {
-      "file": "form-field-Qt2cqCvt.js",
+    "form-field-Bp8K_yqS": {
+      "file": "form-field-Bp8K_yqS.js",
       "isDynamicEntry": false
     },
     "http-qKA_Feah": {
       "file": "http-qKA_Feah.js",
+      "isDynamicEntry": false
+    },
+    "overlay-BpnSSv4z": {
+      "file": "overlay-BpnSSv4z.js",
+      "isDynamicEntry": false
+    },
+    "platform-ClbS6NRw": {
+      "file": "platform-ClbS6NRw.js",
       "isDynamicEntry": false
     },
     "platform-browser-BCFAih5B": {
@@ -136,6 +174,10 @@
     },
     "private-CUZRYPGi": {
       "file": "private-CUZRYPGi.js",
+      "isDynamicEntry": false
+    },
+    "scrolling-B3UaTU_h": {
+      "file": "scrolling-B3UaTU_h.js",
       "isDynamicEntry": false
     }
   }

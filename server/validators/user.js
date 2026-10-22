@@ -46,7 +46,28 @@ export const loginRules = [
 ]
 
 export const changeUserRules = [
-    param('id').isInt({ min: 1 }),
-    body('role').isIn(['user', 'admin'])
-
+    param('id')
+        .isInt({ min: 1 }),
+    body('name')
+        .optional()
+        .trim()
+        .isLength({ min: 2, max: 32 })
+        .withMessage('Name must be between 2 and 32 characters'),
+    body('email')
+        .optional()
+        .trim()
+        .isEmail()
+        .withMessage('Enter a valid email')
+        .normalizeEmail(),
+    body('phone')
+        .optional()
+        .trim()
+        .custom((value) => {
+            if (!normalizePhone(value)) throw new Error('Please enter valid phone number');
+            return true;
+        })
+        .customSanitizer((value) => normalizePhone(value)),
+    body('role')
+    .optional()
+    .isIn(['user', 'admin']),
 ]

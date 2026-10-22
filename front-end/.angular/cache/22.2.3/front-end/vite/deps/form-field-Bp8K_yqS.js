@@ -1,41 +1,13 @@
-import { $o as ɵɵloadQuery, A as contentChild, Ac as Injector, Al as ɵɵdefineInjectable, Bt as computed, Ca as ɵɵclassProp, Co as ɵɵelementStart, Cs as ɵɵreference, Da as ɵɵconditionalCreate, Dr as ViewEncapsulation, En as ElementRef, Fn as Injectable, Gs as ɵɵtemplate, In as Input, Js as ɵɵtextInterpolate, Kc as RuntimeError, Ks as ɵɵtemplateRefExtractor, Oa as ɵɵcontentQuery, Qo as ɵɵlistener, Rc as NgZone, S as ViewChild, So as ɵɵelementEnd, T as afterRenderEffect, Ta as ɵɵconditional, Tl as signal, Wi as setClassMetadata, Wt as linkedSignal, X as input, _c as DOCUMENT, a as ContentChildren, aa as ɵɵControlFeature, al as formatRuntimeError, ao as ɵɵdefineNgModule, ar as RendererFactory2, bs as ɵɵqueryAdvance, cn as Component, cs as ɵɵprojectionDef, da as ɵɵadvance, dc as ɵɵviewQuerySignal, dl as inject, dr as Service, es as ɵɵnextContext, go as ɵɵdomProperty, gt as viewChild, hc as CSP_NONCE, i as ContentChild, il as effect, io as ɵɵdefineDirective, ir as Renderer2, jl as ɵɵdefineInjector, jo as ɵɵgetInheritedFactory, ka as ɵɵcontentQuerySignal, kc as InjectionToken, lo as ɵɵdomElement, ls as ɵɵproperty, ml as isSignal, mo as ɵɵdomElementStart, ol as forwardRef, pc as APP_ID, po as ɵɵdomElementEnd, qn as NgModule, qs as ɵɵtext, qt as untracked, r as ChangeDetectorRef, ro as ɵɵdefineComponent, so as ɵɵdefineService, ss as ɵɵprojection, ua as ɵɵProvidersFeature, uc as ɵɵviewQuery, vc as DestroyRef, vo as ɵɵelement, wn as Directive, xs as ɵɵqueryRefresh, ya as ɵɵattribute } from "./core-Cv98Z2sf.js";
+import { $o as ɵɵloadQuery, A as contentChild, Ac as Injector, Al as ɵɵdefineInjectable, Bt as computed, Ca as ɵɵclassProp, Co as ɵɵelementStart, Cs as ɵɵreference, Da as ɵɵconditionalCreate, Dr as ViewEncapsulation, En as ElementRef, Fn as Injectable, Gs as ɵɵtemplate, In as Input, Js as ɵɵtextInterpolate, Kc as RuntimeError, Ks as ɵɵtemplateRefExtractor, Oa as ɵɵcontentQuery, Qo as ɵɵlistener, Rc as NgZone, S as ViewChild, So as ɵɵelementEnd, T as afterRenderEffect, Ta as ɵɵconditional, Tl as signal, Wi as setClassMetadata, Wt as linkedSignal, X as input, _c as DOCUMENT, a as ContentChildren, aa as ɵɵControlFeature, al as formatRuntimeError, ao as ɵɵdefineNgModule, ar as RendererFactory2, bs as ɵɵqueryAdvance, cn as Component, cs as ɵɵprojectionDef, da as ɵɵadvance, dc as ɵɵviewQuerySignal, dl as inject, dr as Service, es as ɵɵnextContext, go as ɵɵdomProperty, gt as viewChild, hc as CSP_NONCE, i as ContentChild, il as effect, io as ɵɵdefineDirective, ir as Renderer2, jl as ɵɵdefineInjector, jo as ɵɵgetInheritedFactory, ka as ɵɵcontentQuerySignal, kc as InjectionToken, lo as ɵɵdomElement, ls as ɵɵproperty, ml as isSignal, mo as ɵɵdomElementStart, ol as forwardRef, po as ɵɵdomElementEnd, qn as NgModule, qs as ɵɵtext, qt as untracked, r as ChangeDetectorRef, ro as ɵɵdefineComponent, so as ɵɵdefineService, ss as ɵɵprojection, ua as ɵɵProvidersFeature, uc as ɵɵviewQuery, vc as DestroyRef, vo as ɵɵelement, wn as Directive, xs as ɵɵqueryRefresh, ya as ɵɵattribute } from "./core-Cv98Z2sf.js";
 import { D as shareReplay, Qn as Subject, U as pairwise, Xt as filter, g as takeUntil, rr as Observable, tn as merge, ur as Subscription, vn as map, x as startWith } from "./esm5-DYNb5pjm.js";
-import { i as Directionality, t as BidiModule } from "./bidi-CVpiK5Tl.js";
 import "./common-DjZkAoZn.js";
 import { I as NgTemplateOutlet } from "./platform-browser-BCFAih5B.js";
 import { i as Platform } from "./_element-chunk-BFRWmx7T.js";
-import { r as ObserversModule, t as _animationsDisabled } from "./_animation-chunk-CHgw2XSh.js";
+import { i as Directionality, t as BidiModule } from "./bidi-CVpiK5Tl.js";
+import { o as ObserversModule, t as _animationsDisabled } from "./_animation-chunk-DsJTZIvP.js";
+import { t as _IdGenerator } from "./_id-generator-chunk-oFm1Q2j5.js";
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR, NgControl, Validators, ɵFORM_CONTROL_INTEGRATION, ɵelementAcceptsMinMax as elementAcceptsMinMax, ɵisNativeFormElement as isNativeFormElement, ɵisTextualFormElement as isTextualFormElement, ɵselectValueAccessor as selectValueAccessor, ɵsetNativeDomProperty as setNativeDomProperty } from "./@angular_forms.js";
-//#region node_modules/@angular/cdk/fesm2022/coercion.mjs
-function coerceBooleanProperty(value) {
-	return value != null && `${value}` !== "false";
-}
-//#endregion
-//#region node_modules/@angular/cdk/fesm2022/_id-generator-chunk.mjs
-var counters = /* @__PURE__ */ new Map();
-var _IdGenerator = class _IdGenerator {
-	_appId = inject(APP_ID);
-	static _infix = `a${Math.floor(Math.random() * 1e5).toString()}`;
-	getId(prefix, randomize = false) {
-		if (this._appId !== "ng") prefix += this._appId;
-		let count = counters.get(prefix);
-		if (count === void 0) count = 0;
-		else count++;
-		counters.set(prefix, count);
-		return `${prefix}${randomize ? _IdGenerator._infix + "-" : ""}${count}`;
-	}
-	static ɵfac = function _IdGenerator_Factory(__ngFactoryType__) {
-		return new (__ngFactoryType__ || _IdGenerator)();
-	};
-	static ɵprov = /*@__PURE__*/ ɵɵdefineService({
-		token: _IdGenerator,
-		factory: _IdGenerator.ɵfac
-	});
-};
-(() => {
-	(typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(_IdGenerator, [{ type: Service }], null, null);
-})();
-//#endregion
+import "./platform-ClbS6NRw.js";
 //#region node_modules/@angular/forms/fesm2022/_validation_errors-chunk.mjs
 /**
 * @license Angular v22.2.3
@@ -905,6 +877,11 @@ var FormRoot = class FormRoot {
 		}]
 	}] });
 })();
+//#endregion
+//#region node_modules/@angular/cdk/fesm2022/coercion.mjs
+function coerceBooleanProperty(value) {
+	return value != null && `${value}` !== "false";
+}
 //#endregion
 //#region node_modules/@angular/cdk/fesm2022/observers-private.mjs
 var loopLimitExceededErrorHandler = (e) => {
@@ -2396,4 +2373,4 @@ var MatFormFieldModule = class MatFormFieldModule {
 	}], null, null);
 })();
 //#endregion
-export { FORM_FIELD as _, MAT_PREFIX as a, MatFormField as c, MatLabel as d, MatPrefix as f, getMatFormFieldPlaceholderConflictError as g, getMatFormFieldMissingControlError as h, MAT_FORM_FIELD_DEFAULT_OPTIONS as i, MatFormFieldControl as l, getMatFormFieldDuplicatedHintError as m, MAT_ERROR as n, MAT_SUFFIX as o, MatSuffix as p, MAT_FORM_FIELD as r, MatError as s, MatFormFieldModule as t, MatHint as u, _IdGenerator as v, coerceBooleanProperty as y };
+export { coerceBooleanProperty as _, MAT_PREFIX as a, MatFormField as c, MatLabel as d, MatPrefix as f, getMatFormFieldPlaceholderConflictError as g, getMatFormFieldMissingControlError as h, MAT_FORM_FIELD_DEFAULT_OPTIONS as i, MatFormFieldControl as l, getMatFormFieldDuplicatedHintError as m, MAT_ERROR as n, MAT_SUFFIX as o, MatSuffix as p, MAT_FORM_FIELD as r, MatError as s, MatFormFieldModule as t, MatHint as u, FORM_FIELD as v };

@@ -1,0 +1,86 @@
+@if (!confirmingDelete()) {
+    <h2 mat-dialog-title>Edit User</h2>
+
+    <form [formGroup]="form" (ngSubmit)="save()">
+        <mat-dialog-content class="dialog-content">
+            <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput type="name" formControlName="name" />
+                <mat-icon matPrefix>person</mat-icon>
+
+                @if (form.controls.name.errors?.['required']) {
+                    <mat-error>Name is required</mat-error>
+                } @else if (form.controls.name.errors?.['pattern']) {
+                    <mat-error>Name can only have letters</mat-error>
+                } @else if (form.controls.name.errors?.['minlength']) {
+                    <mat-error>Name must be at least 1 characters</mat-error>
+                } @else if (form.controls.name.errors?.['maxlength']) {
+                    <mat-error>Name can not be longer than 32 characters</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>E-mail</mat-label>
+                <input matInput type="email" formControlName="email" />
+                <mat-icon matPrefix>mail</mat-icon>
+
+                @if (form.controls.email.errors?.['required']) {
+                    <mat-error>E-mail addres is required</mat-error>
+                } @else if (form.controls.email.errors?.['email']) {
+                    <mat-error>Invalid E-mail address</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Phone Number</mat-label>
+                <input matInput type="phone" formControlName="phone" />
+                <mat-icon matPrefix>phone</mat-icon>
+
+                @if (form.controls.phone.errors?.['required']) {
+                    <mat-error>Phone number is required</mat-error>
+                } @else if (form.controls.phone.errors?.['pattern']) {
+                    <mat-error>Invalid Phone number</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="role">
+                    <mat-option value="user">User</mat-option>
+                    <mat-option value="admin">Admin</mat-option>
+                </mat-select>
+                <mat-icon matPrefix>admin_panel_settings</mat-icon>
+            </mat-form-field>
+        </mat-dialog-content>
+
+        <mat-dialog-actions>
+            <button mat-button type="button" class="delete" (click)="askDelete()">
+                <mat-icon>delete</mat-icon>
+                Delete user
+            </button>
+ 
+            <span class="spacer"></span>
+ 
+            <button mat-button type="button" mat-dialog-close>Cancel</button>
+            <button mat-flat-button 
+                type="submit" 
+                class="save" 
+                [disabled]="form.invalid || !hasChanges()">
+                Save changes
+            </button>
+        </mat-dialog-actions>
+    </form>
+} @else {
+    <h2 mat-dialog-title>Delete {{ this.user.name }}</h2>
+
+    <mat-dialog-content>
+        <p class="confirm-text">
+            This will permanently remove the account. This can't be undone.
+        </p>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button type="button" (click)="keepUser()">Keep user</button>
+        <button mat-flat-button type="button" class="danger" (click)="deleteUser()">Delete</button>
+    </mat-dialog-actions>
+}

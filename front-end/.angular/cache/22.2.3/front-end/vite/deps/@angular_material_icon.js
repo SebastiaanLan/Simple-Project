@@ -1,8 +1,8 @@
 import { Al as ɵɵdefineInjectable, Ca as ɵɵclassProp, Dr as ViewEncapsulation, En as ElementRef, Fn as Injectable, In as Input, O as booleanAttribute, Pl as ɵɵinject, Pn as Inject, Qn as Optional, Sa as ɵɵclassMap, Sc as ErrorHandler, Wi as setClassMetadata, _c as DOCUMENT, ao as ɵɵdefineNgModule, cn as Component, cs as ɵɵprojectionDef, dl as inject, f as HostAttributeToken, jl as ɵɵdefineInjector, kc as InjectionToken, qc as SecurityContext, qn as NgModule, ro as ɵɵdefineComponent, ss as ɵɵprojection, ya as ɵɵattribute } from "./core-Cv98Z2sf.js";
 import { An as throwError, Ct as take, Lt as catchError, O as share, cn as forkJoin, jn as of, m as tap, ot as finalize, ur as Subscription, vn as map } from "./esm5-DYNb5pjm.js";
-import { t as BidiModule } from "./bidi-CVpiK5Tl.js";
 import { r as DomSanitizer } from "./platform-browser-BCFAih5B.js";
 import { l as HttpClient } from "./http-qKA_Feah.js";
+import { t as BidiModule } from "./bidi-CVpiK5Tl.js";
 import { r as trustedHTMLFromString } from "./private-CUZRYPGi.js";
 //#region node_modules/@angular/material/fesm2022/_icon-registry-chunk.mjs
 function getMatIconNameNotFoundError(iconName) {

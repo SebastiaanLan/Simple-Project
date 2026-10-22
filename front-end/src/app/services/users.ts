@@ -52,19 +52,19 @@ export class Users {
     }
 
     checkAuth(): Observable<boolean> {
-    return this.http.get<User>(
-        `${this.url}/me`,
-        { withCredentials: true }
-        ).pipe(tap(user => {
-            this._currentUser.set(user);
-            this._isAuthenticated.set(true);
-        }),map(() => true),
-            catchError(() => {
-            this._currentUser.set(null);
-            this._isAuthenticated.set(false);
-            return of(false);
-        }),
-    );
+        return this.http.get<User>(
+            `${this.url}/me`,
+            { withCredentials: true }
+            ).pipe(tap(user => {
+                this._currentUser.set(user);
+                this._isAuthenticated.set(true);
+            }),map(() => true),
+                catchError(() => {
+                this._currentUser.set(null);
+                this._isAuthenticated.set(false);
+                return of(false);
+            }),
+        );
     }
     
     getUsers() {
@@ -115,10 +115,20 @@ export class Users {
         )
     }
 
-    changeRole(user: User, role: Role) {
+    updateUser(userId: number, changes: any) {
         return this.http.put(
-            `${this.url}/users/changerole/${user.id}`,
-            { role: role },
+            `${this.url}/users/${userId}`,
+            changes,
+            { withCredentials: true }
+        ).pipe(tap(user => {
+            this._currentUser.set(user);
+        }));
+    }
+
+    updateUserAdmin(userId: number, changes: any) {
+        return this.http.put(
+            `${this.url}/users/admin/${userId}`,
+            changes,
             { withCredentials: true }
         )
     }

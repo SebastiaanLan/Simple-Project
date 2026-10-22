@@ -5,11 +5,6 @@ import { r as DomSanitizer } from "./platform-browser-BCFAih5B.js";
 import { i as Platform, n as coerceElement, r as coerceNumberProperty } from "./_element-chunk-BFRWmx7T.js";
 import { t as _CdkPrivateStyleLoader } from "./_style-loader-chunk-91wp7WQe.js";
 import { n as _setInnerHtml, t as _VisuallyHiddenLoader } from "./private-CUZRYPGi.js";
-//#region node_modules/@angular/cdk/fesm2022/_array-chunk.mjs
-function coerceArray(value) {
-	return Array.isArray(value) ? value : [value];
-}
-//#endregion
 //#region node_modules/@angular/cdk/fesm2022/_fake-event-detection-chunk.mjs
 function isFakeMousedownFromScreenReader(event) {
 	return event.buttons === 0 || event.detail === 0;
@@ -387,6 +382,11 @@ var CdkMonitorFocus = class CdkMonitorFocus {
 		}]
 	}], null, { cdkFocusChange: [{ type: Output }] });
 })();
+//#endregion
+//#region node_modules/@angular/cdk/fesm2022/_array-chunk.mjs
+function coerceArray(value) {
+	return Array.isArray(value) ? value : [value];
+}
 //#endregion
 //#region node_modules/@angular/cdk/fesm2022/_breakpoints-observer-chunk.mjs
 var mediaQueriesForWebkitCompatibility = /* @__PURE__ */ new Set();
@@ -1580,59 +1580,6 @@ var ConfigurableFocusTrapFactory = class ConfigurableFocusTrapFactory {
 	(typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(ConfigurableFocusTrapFactory, [{ type: Service }], () => [], null);
 })();
 //#endregion
-//#region node_modules/@angular/cdk/fesm2022/platform.mjs
-var PlatformModule = class PlatformModule {
-	static ɵfac = function PlatformModule_Factory(__ngFactoryType__) {
-		return new (__ngFactoryType__ || PlatformModule)();
-	};
-	static ɵmod = /*@__PURE__*/ ɵɵdefineNgModule({ type: PlatformModule });
-	static ɵinj = /*@__PURE__*/ ɵɵdefineInjector({});
-};
-(() => {
-	(typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PlatformModule, [{
-		type: NgModule,
-		args: [{}]
-	}], null, null);
-})();
-var supportedInputTypes;
-var candidateInputTypes = [
-	"color",
-	"button",
-	"checkbox",
-	"date",
-	"datetime-local",
-	"email",
-	"file",
-	"hidden",
-	"image",
-	"month",
-	"number",
-	"password",
-	"radio",
-	"range",
-	"reset",
-	"search",
-	"submit",
-	"tel",
-	"text",
-	"time",
-	"url",
-	"week"
-];
-function getSupportedInputTypes() {
-	if (supportedInputTypes) return supportedInputTypes;
-	if (typeof document !== "object" || !document) {
-		supportedInputTypes = new Set(candidateInputTypes);
-		return supportedInputTypes;
-	}
-	let featureTestInput = document.createElement("input");
-	supportedInputTypes = new Set(candidateInputTypes.filter((value) => {
-		featureTestInput.setAttribute("type", value);
-		return featureTestInput.type === value;
-	}));
-	return supportedInputTypes;
-}
-//#endregion
 //#region node_modules/@angular/cdk/fesm2022/layout.mjs
 var LayoutModule = class LayoutModule {
 	static ɵfac = function LayoutModule_Factory(__ngFactoryType__) {
@@ -1660,4 +1607,4 @@ function _animationsDisabled() {
 	return _getAnimationsState() !== "enabled";
 }
 //#endregion
-export { normalizePassiveListenerOptions as a, isFakeTouchstartFromScreenReader as c, FocusMonitor as i, getSupportedInputTypes as n, _getEventTarget as o, ObserversModule as r, isFakeMousedownFromScreenReader as s, _animationsDisabled as t };
+export { LiveAnnouncer as a, FocusMonitor as c, _getFocusedElementPierceShadowDom as d, isFakeMousedownFromScreenReader as f, InteractivityChecker as i, normalizePassiveListenerOptions as l, A11yModule as n, ObserversModule as o, isFakeTouchstartFromScreenReader as p, FocusTrapFactory as r, coerceArray as s, _animationsDisabled as t, _getEventTarget as u };

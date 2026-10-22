@@ -1,0 +1,50 @@
+<form [formGroup]="form" (ngSubmit)="save()" class="profile-form">
+    <h2 class="form-title">Edit your Details</h2>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput type="name" formControlName="name" />
+        <mat-icon matPrefix>person</mat-icon>
+
+        @if (form.controls.name.errors?.['required']) {
+            <mat-error>Name is required</mat-error>
+        } @else if (form.controls.name.errors?.['pattern']) {
+            <mat-error>Name can only have letters</mat-error>
+        } @else if (form.controls.name.errors?.['minlength']) {
+            <mat-error>Name must be at least 1 characters</mat-error>
+        } @else if (form.controls.name.errors?.['maxlength']) {
+            <mat-error>Name can not be longer than 32 characters</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>E-mail</mat-label>
+        <input matInput type="email" formControlName="email" />
+        <mat-icon matPrefix>mail</mat-icon>
+
+        @if (form.controls.email.errors?.['required']) {
+            <mat-error>E-mail addres is required</mat-error>
+        } @else if (form.controls.email.errors?.['email']) {
+            <mat-error>Invalid E-mail address</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Phone Number</mat-label>
+        <input matInput type="phone" formControlName="phone" />
+        <mat-icon matPrefix>phone</mat-icon>
+
+        @if (form.controls.phone.errors?.['required']) {
+            <mat-error>Phone number is required</mat-error>
+        } @else if (form.controls.phone.errors?.['pattern']) {
+            <mat-error>Invalid Phone number</mat-error>
+        }
+    </mat-form-field>
+
+    <div class="profile-actions">
+        <button mat-flat-button type="submit" class="edit" [disabled]="form.invalid || !hasChanges()">
+            Save changes
+        </button>
+        <button mat-stroked-button type="button" (click)="cancel()">Cancel</button>
+    </div>
+</form>

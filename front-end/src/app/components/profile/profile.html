@@ -6,43 +6,50 @@
             <p>{{ this.UsersService.currentUser().email }}</p>
         </header>
 
-        <section class="profile-details">
-            <div class="detail">
-                <mat-icon>person</mat-icon>
-                <div class="detail-text">
-                    <span class="label">Name</span>
-                    <span class="value">{{ this.UsersService.currentUser().name }}</span>
+        @if (!editing()) {
+            <section class="profile-details">
+                <div class="detail">
+                    <mat-icon>person</mat-icon>
+                    <div class="detail-text">
+                        <span class="label">Name</span>
+                        <span class="value">{{ this.UsersService.currentUser().name }}</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="detail">
-                <mat-icon>mail</mat-icon>
-                <div class="detail-text">
-                    <span class="label">E-mail</span>
-                    <span class="value">{{ this.UsersService.currentUser().email }}</span>
+                <div class="detail">
+                    <mat-icon>mail</mat-icon>
+                    <div class="detail-text">
+                        <span class="label">E-mail</span>
+                        <span class="value">{{ this.UsersService.currentUser().email }}</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="detail">
-                <mat-icon>phone</mat-icon>
-                <div class="detail-text">
-                    <span class="label">Phone number</span>
-                    <span class="value">{{ this.UsersService.currentUser().phone }}</span>
+                <div class="detail">
+                    <mat-icon>phone</mat-icon>
+                    <div class="detail-text">
+                        <span class="label">Phone number</span>
+                        <span class="value">{{ this.UsersService.currentUser().phone }}</span>
+                    </div>
                 </div>
+            </section>
+
+            <div class="profile-actions">
+                <button mat-flat-button type="button" class="edit" (click)="editing.set(true)">Edit profile</button>
+
+                @if (this.UsersService.idAdmin()) {
+                    <a mat-stroked-button class="dasboard-link" routerLink="/dashboard">
+                        <mat-icon>dashboard</mat-icon>
+                        Go to Dasboard
+                    </a>
+                }
+
+                <button mat-stroked-button type="button" class="logout" (click)="logout()">Log out</button>
             </div>
-        </section>
-
-        <div class="profile-actions">
-            <button mat-flat-button type="button" class="edit">Edit profile</button>
-
-            @if (this.UsersService.idAdmin()) {
-                <a mat-stroked-button class="dasboard-link" routerLink="/dashboard">
-                    <mat-icon>dashboard</mat-icon>
-                    Go to Dasboard
-                </a>
-            }
-
-            <button mat-stroked-button type="button" class="logout" (click)="logout()">Log out</button>
-        </div>
+        } @else {
+            <app-edit-page 
+                (cancelled)="onCancelled()"
+            />
+        }
+        
     </mat-card>
 </main>

@@ -58,3 +58,18 @@ export const isAdmin = async (req, res, next) => {
         })
     }
 }
+
+export const isSelfOrAdmin = async (req, res, next) => {
+    try {
+        if (req.user.role !== 'admin' && String(req.user.id) !== String(req.params.id)) {
+            userLogger.warn("Unauthorized action");
+            return res.status(403).json({ message: "You are not allowed to do that" });
+        }
+
+        next();
+    } catch (err) {
+        userLogger.error(err);
+
+        res.status(500).json({ message: 'Something went wrong' })
+    }
+}

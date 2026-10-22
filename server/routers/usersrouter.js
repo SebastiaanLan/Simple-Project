@@ -1,8 +1,8 @@
 import Router from 'express';
 
-import { getAllUsers, getOneUser, register, login, deleteUser, updateUser, me, logout, changeUserRole } from '../controllers/usercontroller.js';
+import { getAllUsers, getOneUser, register, login, deleteUser, updateUser, me, logout, updateUserAdmin } from '../controllers/usercontroller.js';
 
-import { isAdmin, validateToken } from '../middleware/auth.js';
+import { isAdmin, isSelfOrAdmin, validateToken } from '../middleware/auth.js';
 
 import validate from '../middleware/validate.js';
 import { registerRules, loginRules, changeUserRules } from '../validators/user.js';
@@ -15,11 +15,11 @@ router.post('/logout', logout);
 router.post('/register', registerRules, validate, register);
 router.get('/me', validateToken, me);
 
-router.get('/users', getAllUsers);
-router.get('/users/:id', getOneUser);
+router.get('/users', validateToken, isAdmin, getAllUsers);
+router.get('/users/:id', validateToken, isAdmin, getOneUser);
 
 router.delete('/users/:id', validateToken, deleteUser);
-router.put('/users/:id', validateToken, updateUser);
-router.put('/users/changerole/:id', changeUserRules, validateToken, isAdmin, changeUserRole);
+router.put('/users/:id', validateToken, isSelfOrAdmin, changeUserRules, validate, updateUser);
+router.put('/users/admin/:id', validateToken, isAdmin, changeUserRules, validate, updateUserAdmin);
 
 export default router;

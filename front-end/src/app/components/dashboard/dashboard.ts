@@ -6,10 +6,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-
+import { MatDialog } from '@angular/material/dialog';
 
 import { Users } from '../../services/users';
 import { RouterLink } from '@angular/router';
+import { EditDialog } from '../edit-dialog/edit-dialog';
 
 @Component({
   imports: [
@@ -22,6 +23,7 @@ import { RouterLink } from '@angular/router';
 })
 export class Dashboard {
   UsersService = inject(Users);
+  dialog = inject(MatDialog);
 
   displayedColumns = ['name', 'email', 'phone', 'role', 'actions'];
   
@@ -43,27 +45,14 @@ export class Dashboard {
     this.search.set((event.target as HTMLInputElement).value);
   }
 
-  deleteUser(user: any) {
-    this.UsersService.deleteUser(user).subscribe({
-      next: () => this.UsersService.getUsers(),
-      error: (err) => console.error(err)
-    });
+  editUser(user: any) {
+    this.dialog
+      .open<EditDialog, any>(EditDialog, {data: user, width: '440px' })
+      .afterClosed()
+      .subscribe((result) => {
+        if (!result) return;
+      })
   }
-
-  promoteUser(user: any) {
-    this.UsersService.changeRole(user, 'admin').subscribe({
-      next: () => this.UsersService.getUsers(),
-      error: (err) => console.error(err)
-    })
-  }
-
-  demoteUser(user: any) {
-    this.UsersService.changeRole(user, 'user').subscribe({
-      next: () => this.UsersService.getUsers(),
-      error: (err) => console.error(err)
-    })
-  }
-
 
   initials(name: string): string {
     return name
