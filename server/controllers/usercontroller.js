@@ -14,30 +14,11 @@ const userLogger = logger.child({ module: 'auth' });
 export const getAllUsers = async (req, res) => {
     try {
         const users = await User.findAll({
-            attributes: ['id', 'name', 'email', 'phone', 'role'],
+            attributes: ['id', 'name', 'email', 'phone', 'role', 'avatar'],
         });
 
         userLogger.info("Sent all the Users");
         res.status(200).json(users);
-    } catch(err) {
-        userLogger.error(err);
-        res.status(500).json({ message: "Something went wrong"});
-    }
-}
-
-export const getOneUser = async (req, res) => {
-    try {
-        const id = Number(req.params.id);
-        const user = await User.findByPk(id, {
-            attributes: ['id', 'name', 'email', 'phone'],
-        });
-
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        userLogger.info("Send one user");
-        res.status(200).json(user);
     } catch(err) {
         userLogger.error(err);
         res.status(500).json({ message: "Something went wrong"});
@@ -71,6 +52,7 @@ export const logout = (req, res) => {
     try {
         res.clearCookie('token', cookieOptions);
 
+        userLogger.info('User loggedout in successfully');
         res.status(200).json({ message: "Logout sucessful" })
     } catch (err) {
         userLogger.error(err);
@@ -88,7 +70,14 @@ export const register = async (req, res) => {
         setAuthCookie(res, user);
 
         userLogger.info("User registered");
-        res.status(201).json({ id: user.id, name: user.name, phone: user.phone, email: user.email});
+        return res.status(201).json({ 
+            id: user.id, 
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            avatar: user.avatar
+        });
     } catch (err) {
         if (err.name === 'SequelizeUniqueConstraintError') {
             return res.status(409).json({ message: 'Email already in use' });
@@ -133,10 +122,16 @@ export const updateUser = async (req, res) => {
         }
 
         await user.update(data);
-
-        userLogger.info("Updated a user");
-        res.status(200).json({ id: user.id, name: user.name, email: user.email, phone: user.phone, role: user.role });
         
+        userLogger.info("Updated a user");
+        return res.status(200).json({ 
+            id: user.id, 
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            avatar: user.avatar
+        });
     } catch (err) {
         if (err.name === 'SequelizeUniqueConstraintError') {
             return res.status(409).json({ message: 'Email already in use' });
@@ -164,7 +159,14 @@ export const updateUserAdmin = async (req, res) => {
         await user.update(data);
         
         userLogger.info("Updated a user");
-        return res.status(200).json({ message: "User role updated" })
+        return res.status(200).json({ 
+            id: user.id, 
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            avatar: user.avatar
+        });
     } catch (err) {
         if (err.name === 'SequelizeUniqueConstraintError') {
             return res.status(409).json({ message: 'Email already in use' });
@@ -180,15 +182,16 @@ export const updateUserAdmin = async (req, res) => {
 
 export const me = async (req, res) => {
     try {
-        const user = req.user
-
-        return res.status(200).json({
-            id: user.id,
+        const user = req.user;
+        
+        return res.status(200).json({ 
+            id: user.id, 
             name: user.name,
             email: user.email,
             phone: user.phone,
-            role: user.role
-        })
+            role: user.role,
+            avatar: user.avatar
+        });
     } catch (err) {
         userLogger.error(err);
         return res.status(500).json({ message: 'Something went wrong' });

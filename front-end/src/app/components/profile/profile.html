@@ -1,7 +1,7 @@
 <main class="profile-page">
     <mat-card class="profile-card" appearance="outlined">
         <header class="profile-header">
-            <div class="avatar">{{ initials(this.UsersService.currentUser().name ) }}</div>
+            <div class="avatar"><img [src]="avatarUrl"></div>
             <h1>{{ this.UsersService.currentUser().name }}</h1>
             <p>{{ this.UsersService.currentUser().email }}</p>
         </header>

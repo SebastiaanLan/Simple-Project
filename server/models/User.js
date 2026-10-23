@@ -29,10 +29,14 @@ export const User = db.define('user', {
     }, password: {
         type: sequelize.STRING,
         allowNull: false
-    } , role: {
+    }, role: {
         type: sequelize.ENUM('user', 'admin'),
         allowNull: false,
         defaultValue: 'user'
+    }, avatar: {
+        type: sequelize.STRING,
+        allowNull: false,
+        defaultValue: '0.webp'
     }
 })
 

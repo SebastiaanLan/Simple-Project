@@ -45,7 +45,6 @@ export class EditDialog {
   deleteUser() {
     this.UsersService.deleteUser(this.user).subscribe({
       next: () => {
-        this.UsersService.getUsers();
         this.dialogRef.close()
       }, error: (err) => console.error(err)
     });
@@ -80,7 +79,6 @@ export class EditDialog {
 
     this.UsersService.updateUserAdmin(this.user.id, changes).subscribe({
       next: () => {
-        this.UsersService.getUsers();
         this.dialogRef.close()
       },
       error: (err) => console.error(err)

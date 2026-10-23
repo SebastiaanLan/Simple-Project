@@ -23,6 +23,7 @@ export interface User {
   email: string;
   phone: string;
   role: Role;
+  avatar: string;
 }
 
 @Service()
@@ -39,7 +40,9 @@ export class Users {
     currentUser = this._currentUser.asReadonly();
 
     private _isAuthenticated = signal(false);
-    readonly isAuthenticated = this._isAuthenticated.asReadonly();;
+    readonly isAuthenticated = this._isAuthenticated.asReadonly();
+
+    private _authChecked = signal(false);
 
     readonly idAdmin = computed(
         () => this._currentUser().role === 'admin'
@@ -52,16 +55,23 @@ export class Users {
     }
 
     checkAuth(): Observable<boolean> {
+        if (this._authChecked()) {
+            return of(this._isAuthenticated());
+        }
+
         return this.http.get<User>(
             `${this.url}/me`,
             { withCredentials: true }
             ).pipe(tap(user => {
+                console.log(user.role);
                 this._currentUser.set(user);
                 this._isAuthenticated.set(true);
+                this._authChecked.set(true);
             }),map(() => true),
                 catchError(() => {
                 this._currentUser.set(null);
                 this._isAuthenticated.set(false);
+                this._authChecked.set(true);
                 return of(false);
             }),
         );
@@ -105,6 +115,7 @@ export class Users {
         ).pipe(tap(() => {
             this._currentUser.set(null);
             this._isAuthenticated.set(false);
+            this._authChecked.set(true);
         }));
     }
 
@@ -112,7 +123,13 @@ export class Users {
         return this.http.delete(
             `${this.url}/users/${user.id}`,
             { withCredentials: true }
-        )
+        ).pipe(
+            tap(() => {
+                this._users.update((users: User[]) =>
+                    users.filter((u: User) => u.id !== user.id)
+                );
+            })
+        );
     }
 
     updateUser(userId: number, changes: any) {
@@ -130,6 +147,14 @@ export class Users {
             `${this.url}/users/admin/${userId}`,
             changes,
             { withCredentials: true }
-        )
+        ).pipe(
+            tap(updatedUser => 
+                this._users.update((users: User[]) => 
+                    users.map( (user: User) =>
+                        user.id === userId ? { ...user, ...updatedUser } : user
+                    )
+                )
+            )
+        );
     }
 }

@@ -1,6 +1,33 @@
 <form [formGroup]="form" (ngSubmit)="save()" class="profile-form">
     <h2 class="form-title">Edit your Details</h2>
 
+    <div class="avatar-picker">
+        <div class="avatar">
+            <img [src]="avatarUrl">
+        </div>
+    
+
+        <div class="avatar-buttons">
+            <button mat-stroked-button type="button" (click)="fileInput.click()">
+                <mat-icon>upload</mat-icon>
+                Upload photo
+            </button>
+
+            @if (currentAvatar()) {
+                <button mat-button type="button" (click)="clearAvatar()">Remove</button>
+            }
+        </div>
+
+        <input #fileInput type="file" accept="image/png,image/jpeg,image/webp" hidden (change)="onAvatarSelected($event)">
+
+        @if (avatarError()) {
+            <p class="avatar-error">{{ avatarError() }}</p>
+        } @else {
+            <p class="avatar-hint">PNG, JPG or WebP, up to 2 MB</p>
+        }
+    </div>
+
+
     <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
         <input matInput type="name" formControlName="name" />

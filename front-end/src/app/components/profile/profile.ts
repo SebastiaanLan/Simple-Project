@@ -25,6 +25,8 @@ export class Profile {
 
   editing = signal(false);
 
+  avatarUrl = `http://localhost:4000/users/avatar/${this.UsersService.currentUser().avatar}`;
+
   logout() {
     this.UsersService.logout().subscribe({
       next: () => this.router.navigate(['/login'])
@@ -34,15 +36,4 @@ export class Profile {
   onCancelled() {
     this.editing.set(false);
   }
-
-  initials(name: string): string {
-    return name
-      .split(' ')
-      .filter(Boolean)
-      .map((part) => part[0])
-      .slice(0, 2)
-      .join('')
-      .toUpperCase();
-  }
-
 }
