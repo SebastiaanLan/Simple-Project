@@ -36,7 +36,7 @@ export const User = db.define('user', {
     }, avatar: {
         type: sequelize.STRING,
         allowNull: false,
-        defaultValue: '0.webp'
+        defaultValue: 'standard.webp'
     }
 })
 

@@ -34,7 +34,7 @@
             </section>
 
             <div class="profile-actions">
-                <button mat-flat-button type="button" class="edit" (click)="editing.set(true)">Edit profile</button>
+                <a mat-flat-button class="edit" routerLink="/profile/edit">Edit profile</a>
 
                 @if (this.UsersService.idAdmin()) {
                     <a mat-stroked-button class="dasboard-link" routerLink="/dashboard">

@@ -25,7 +25,7 @@ export class Profile {
 
   editing = signal(false);
 
-  avatarUrl = `http://localhost:4000/users/avatar/${this.UsersService.currentUser().avatar}`;
+  avatarUrl = `http://localhost:4000/users/avatar/${this.UsersService.currentUser().id}`;
 
   logout() {
     this.UsersService.logout().subscribe({

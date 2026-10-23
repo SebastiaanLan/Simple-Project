@@ -41,7 +41,14 @@ export const login = async (req, res) => {
         setAuthCookie(res, user);
 
         userLogger.info('User logged in successfully');
-        res.status(200).json({ message: 'Login successful' })
+        return res.status(200).json({ 
+            id: user.id, 
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            avatar: user.avatar
+        });
     } catch (err) {
         userLogger.error(err);
         res.status(500).json({ message: "Something went wrong" });

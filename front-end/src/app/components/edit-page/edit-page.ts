@@ -1,10 +1,12 @@
 import { Component, computed, inject, OnInit, output, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 
 import { Users } from '../../services/users';
 
@@ -14,7 +16,8 @@ const ALLOWED_AVATAR_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
 @Component({
   imports: [
     ReactiveFormsModule,
-    MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule
+    RouterLink,
+    MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatCardModule
   ],
   selector: 'app-edit-page',
   styleUrl: './edit-page.css',
@@ -22,11 +25,17 @@ const ALLOWED_AVATAR_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
 })
 export class EditPage {
   private FormBuilder = inject(FormBuilder);
+  private router = inject(Router);
   private UsersService = inject(Users);
 
-  cancelled = output<void>();
+  user = this.UsersService.currentUser();
+  avatarUrl = `http://localhost:4000/users/avatar/${this.user.id}`;
 
-  avatarUrl = `http://localhost:4000/users/avatar/${this.UsersService.currentUser().id}`;
+  currentAvatar = computed(
+    () => this.avatarPreview() ??
+      (this.removeAvatar() ? null : this.avatarUrl)
+
+  )
 
   avatarFile = signal<File | null>(null);
   avatarPreview = signal<string | null>(null);
@@ -36,16 +45,11 @@ export class EditPage {
   form = this.FormBuilder.group({
     name: ['', [Validators.required, Validators.pattern(/^[\p{L}][\p{L}\s'\-]*$/u), Validators.minLength(2), Validators.maxLength(32)]],
     email: ['', [Validators.required, Validators.email]],
-    phone: ['', [Validators.required, Validators.pattern(/^[+]?[- ()0-9]{6,20}$/)]],
-    avatar: ['', [Validators.required]]
+    phone: ['', [Validators.required, Validators.pattern(/^[+]?[- ()0-9]{6,20}$/)]]
   });
 
-  currentAvatar = computed(
-    () => this.avatarPreview() ?? (this.removeAvatar() ? null : (this.UsersService.currentUser().avatarUrl ?? null)) 
-  )
-
   ngOnInit() {
-    const { name, email, phone } = this.UsersService.currentUser();
+    const { name, email, phone, avatar } = this.UsersService.currentUser();
     this.form.reset({ name, email, phone});
   }
 
@@ -57,7 +61,7 @@ export class EditPage {
       value.name?.trim() !== user.name ||
       value.email?.trim() !== user.email ||
       value.phone?.trim() !== user.phone ||
-      value.avatar?.trim() !== user.avatar
+      this.avatarFile() !== null
     )
   }
 
@@ -71,30 +75,41 @@ export class EditPage {
     const user = this.UsersService.currentUser();
     const changes: Record<string, string> = {};
 
-    for (const key of ['name', 'email', 'phone', 'avatar'] as const) {
+    for (const key of ['name', 'email', 'phone'] as const) {
       const newValue = value[key]?.trim();
       if (newValue !== user[key]) {
         changes[key] = newValue!;
       }
     }
 
-    this.UsersService.updateUser(user.id, changes).subscribe({
-      next: () => {
-        this.cancelled.emit();
-      },
-      error: (err) => console.error(err)
-    })
-  }
-
-  cancel() {
-    this.cancelled.emit();
+    if (Object.keys(changes).length > 0) {
+      this.UsersService.updateUser(user.id, changes).subscribe({
+        next: () => {
+          
+        },
+          error: (err) => console.error(err)
+        }
+      );
+    }
+    
+    const file = this.avatarFile();
+    if (file) {
+      this.UsersService.uploadAvatar(user.id, file).subscribe({
+        next: () => {
+          this.router.navigate(['/']);
+        },
+          error: (err) => console.error(err)
+        }
+      );
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
   clearAvatar() {
     this.clearPreview();
     this.avatarFile.set(null);
     this.avatarError.set('');
-    this.removeAvatar.set(!!this.UsersService.currentUser.avatarUrl);
   }
 
   clearPreview() {

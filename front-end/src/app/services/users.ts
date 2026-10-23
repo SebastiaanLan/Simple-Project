@@ -93,7 +93,11 @@ export class Users {
             userInfo,
             { withCredentials: true }
         ).pipe(
-            tap(() => this.checkAuth())
+            tap(user => {
+                this._currentUser.set(user);
+                this._isAuthenticated.set(true);
+                this._authChecked.set(true);
+            })
         );
     }
 
@@ -103,7 +107,11 @@ export class Users {
             loginInfo,
             { withCredentials: true }
         ).pipe(
-            tap(() => this.checkAuth())
+            tap(user => {
+                this._currentUser.set(user);
+                this._isAuthenticated.set(true);
+                this._authChecked.set(true);
+            })
         );
     }
 
@@ -157,4 +165,22 @@ export class Users {
             )
         );
     }
+
+    uploadAvatar(userId: number, file: File) {
+        const body = new FormData();
+        body.append('avatar', file);
+        return this.http.put<{ avatar: string }>(
+            `${this.url}/users/avatar/${userId}`,
+            body,
+            {  withCredentials: true }
+        ).pipe(
+            tap(response =>
+                this._users.update((user:User) =>
+                    user.id === userId ? { ...user, avatar: response.avatar } : user
+                )
+            )
+        );
+    }
+
+    deleteAvatar(userId: number) {}
 }
